@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0; overflow: hidden
+        }
+        .container {
+            position: relative;
+            height: 90vh;
+            width: 90vh;
+            float: right;
+            float: inline-end;
+            margin-top: 10vh;
+            
+        }
+
+        .container>img {
+        
+            width: 100%;
+            height: 100%;
+            margin-right: 1vh;
+           
+           
+        }
+
+
+        .head,
+        .BY,
+        .YE,
+        .YD {
+            position: absolute;
+            transition: transform 0.1s ease;
+            /* Adicione uma transição suave para suavizar o movimento */
+        }
+
+        .head {
+            z-index: 4;
+        }
+
+        .BY {
+            z-index: 2;
+        }
+
+        .YE {
+            z-index: 3;
+        }
+
+        .YD {
+            z-index: 3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="vazado.png" class="head">
+        <img src="Brancolho.png" class="BY">
+        <img src="esquerdolho.png" class="YE" id="olhoEsquerdo">
+        <img src="Direitolho.png" class="YD" id="OlhoDireito">
+    </div>
+
+    <script>
+        // Variáveis de configuração para o movimento dos olhos
+        const maxEyeDistance = 30; // Distância máxima que os olhos podem se afastar do centro
+        const eyeMoveAmount = 6;   // Quantidade de pixels que os olhos se movem a cada atualização
+
+        function updateEyePosition(eye, mouseX, mouseY) {
+            const eyeRect = eye.getBoundingClientRect();
+            const eyeX = eyeRect.left + eyeRect.width / 2;
+            const eyeY = eyeRect.top + eyeRect.height / 2;
+
+            const deltaX = mouseX - eyeX;
+            const deltaY = mouseY - eyeY;
+
+            const angle = Math.atan2(deltaY, deltaX);
+            const distance = Math.min(maxEyeDistance, Math.hypot(deltaX, deltaY)); // Limita a distância máxima
+
+            const translateX = Math.cos(angle) * (distance / maxEyeDistance) * eyeMoveAmount;
+            const translateY = Math.sin(angle) * (distance / maxEyeDistance) * eyeMoveAmount;
+
+            eye.style.transform = `translate(${translateX}px, ${translateY}px)`;
+        }
+
+        document.addEventListener("mousemove", function (event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const olhoEsquerdo = document.getElementById("olhoEsquerdo");
+            const olhoDireito = document.getElementById("OlhoDireito");
+
+            updateEyePosition(olhoEsquerdo, mouseX, mouseY);
+            updateEyePosition(olhoDireito, mouseX, mouseY);
+        });
+    </script>
+</body>
+
+</html>
